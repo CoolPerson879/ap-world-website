@@ -1,5 +1,8 @@
 "use client";
 import React, { useState } from "react";
+import { units } from "./units";
+import { themes } from "./themes";
+import { thinkingSkills } from "./thinkingSkills";
 import {
   ChevronRight,
   Menu,
@@ -14,176 +17,8 @@ import {
 
 const APWorldHistoryApp = () => {
   const [currentPage, setCurrentPage] = useState("home");
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-
-  const units = [
-    {
-      id: 1,
-      title: "The Global Tapestry",
-      period: "1200-1450",
-      weight: "8-10%",
-      color: "bg-purple-500",
-      topics: [
-        "Developments in Song China and Dar-al-Islam",
-        "Kingdoms in South and Southeast Asia",
-        "Developments in states in the Americas",
-        "Developments in state-building in Africa",
-        "Feudalism and developments in Europe and Japan",
-      ],
-    },
-    {
-      id: 2,
-      title: "Networks of Exchange",
-      period: "1200-1450",
-      weight: "8-10%",
-      color: "bg-purple-500",
-      topics: [
-        "Trade along networks of exchange",
-        "The Silk Roads and the Mongol Empire",
-        "Indian Ocean Trade Network",
-        "Trans-Saharan Trade Network",
-        "Cultures around the world changed with connection",
-        "The spread of disease and migration of crops through networks of exchange",
-      ],
-    },
-    {
-      id: 3,
-      title: "Land-Based Empires",
-      period: "1450-1750",
-      weight: "12-15%",
-      color: "bg-green-500",
-      topics: [
-        "Gunpowder Empires: Ottoman, Safavid, Mughal Empires - expanded with gunpowder weapons",
-        "The consolidation and legitimization of power of Gunpowder Empires",
-        "Changes in religion, Protestant Reformation, syncretic beliefs",
-      ],
-    },
-    {
-      id: 4,
-      title: "Maritime Empires",
-      period: "1450-1750",
-      weight: "12-15%",
-      color: "bg-green-500",
-      topics: [
-        "Technological innovations allowed for maritime expansion",
-        "The Columbian Exchange",
-        "The effects of the Columbian Exchange, Atlantic System, Trans-Atlantic trade, Slave Trade",
-        "New economic policies used by states",
-      ],
-    },
-    {
-      id: 5,
-      title: "Revolutions",
-      period: "1750-1900",
-      weight: "12-15%",
-      color: "bg-red-500",
-      topics: [
-        "Enlightenment ideals challenged traditional values",
-        "Nationalism led to independence movements",
-        "American, Latin American, French and Haitian Revolutions",
-        "The Industrial Revolution, causes and changes to hierarchies",
-      ],
-    },
-    {
-      id: 6,
-      title: "Consequences of Industrialization",
-      period: "1750-1900",
-      weight: "12-15%",
-      color: "bg-red-500",
-      topics: [
-        "Rationales for imperialism",
-        "State expansion and responses to expansion",
-        "Economic development and economic imperialism",
-        "Causes and effects of migration",
-      ],
-    },
-    {
-      id: 7,
-      title: "Global Conflict",
-      period: "1900-present",
-      weight: "8-10%",
-      color: "bg-yellow-500",
-      topics: [
-        "Shifting of power",
-        "Causes and effects of World War I",
-        "Great Depression and the Interwar Period",
-        "Causes and effects of World War II",
-        "Mass atrocities committed",
-      ],
-    },
-    {
-      id: 8,
-      title: "Cold War and Decolonization",
-      period: "1900-present",
-      weight: "8-10%",
-      color: "bg-yellow-500",
-      topics: [
-        "Causes and effects of the Cold War",
-        "Spread and containment of communism",
-        "Decolonization and state-building",
-      ],
-    },
-    {
-      id: 9,
-      title: "Globalization",
-      period: "1900-present",
-      weight: "8-10%",
-      color: "bg-yellow-500",
-      topics: [
-        "Advancements in technology, Green Revolution",
-        "Spread of disease in the globalized world",
-        "Environmental effects of globalization",
-        "Reform, resistance, and cultural effects of globalization",
-        "World Bank, IMF",
-        "The United Nations",
-      ],
-    },
-  ];
-
-  const themes = [
-    {
-      id: "ENV",
-      title: "Humans & The Environment",
-      letter: "I",
-      description:
-        "Geography of regions of cities • Diseases, environmental factors for population change • How humans changed the environment",
-    },
-    {
-      id: "CDI",
-      title: "Cultural Developments and Interactions",
-      letter: "C",
-      description:
-        "Cultures of societies • Religions • Diffusion of cultures, how cultures and religions interacted with each other",
-    },
-    {
-      id: "GOV",
-      title: "Governance",
-      letter: "P",
-      description:
-        "Political structures • Revolutions • Laws passed • How people reacted to policies and political structures",
-    },
-    {
-      id: "ECN",
-      title: "Economic Systems",
-      letter: "E",
-      description:
-        "Economic systems of a society • How money was generated and lost in a region • Trade networks • Labor systems",
-    },
-    {
-      id: "SIO",
-      title: "Social Interactions and Organization",
-      letter: "S",
-      description:
-        "How people interact with each other within and outside a society",
-    },
-    {
-      id: "TEC",
-      title: "Technology and Innovation",
-      letter: "",
-      description:
-        "How humans developed new technologies • How new technologies changed societies and economic systems",
-    },
-  ];
 
   const NavigationBar = () => (
     <div className="bg-white px-6 py-4 flex items-center justify-between border-b shadow-sm">
@@ -207,7 +42,13 @@ const APWorldHistoryApp = () => {
     </div>
   );
 
-  const SideNavigation = () => (
+  const SideNavigation = ({
+    currentPage,
+    setCurrentPage,
+  }: {
+    currentPage: string;
+    setCurrentPage: (page: string) => void;
+  }) => (
     <div className="hidden lg:block w-64 bg-white border-r shadow-sm min-h-screen">
       <div className="p-6">
         <h2
@@ -282,10 +123,15 @@ const APWorldHistoryApp = () => {
     </div>
   );
 
-  // Mobile menu state
-  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  // Mobile menu state is already declared at the top of APWorldHistoryApp
 
-  const MobileMenu = () =>
+  const MobileMenu = ({
+    currentPage,
+    setCurrentPage,
+  }: {
+    currentPage: string;
+    setCurrentPage: (page: string) => void;
+  }) =>
     showMobileMenu ? (
       <div className="fixed inset-0 z-50 flex lg:hidden pointer-events-none">
         {/* The menu slides in from the left, with backdrop blur and semi-transparent white */}
@@ -593,6 +439,7 @@ const APWorldHistoryApp = () => {
     </div>
   );
 
+  const [themesTab, setThemesTab] = useState<"themes" | "skills">("themes");
   const ThemesPage = () => (
     <div className="flex-1 bg-stone-200 min-h-screen">
       <div className="max-w-5xl mx-auto p-6">
@@ -600,54 +447,97 @@ const APWorldHistoryApp = () => {
           className="text-3xl font-bold text-center mb-8"
           style={{ fontFamily: "Playfair Display, serif" }}
         >
-          Themes
+          {themesTab === "themes" ? "Themes" : "Thinking Skills"}
         </h1>
 
         <div className="flex justify-center mb-8">
           <div className="flex bg-white rounded-full p-1 shadow-sm">
-            <button className="px-6 py-3 bg-black text-white rounded-full">
+            <button
+              className={`px-6 py-3 rounded-full transition-colors font-medium ${
+                themesTab === "themes"
+                  ? "bg-black text-white"
+                  : "text-gray-600 hover:bg-gray-100"
+              }`}
+              onClick={() => setThemesTab("themes")}
+            >
               Themes
             </button>
-            <button className="px-6 py-3 text-gray-600">Thinking Skills</button>
+            <button
+              className={`px-6 py-3 rounded-full transition-colors font-medium ${
+                themesTab === "skills"
+                  ? "bg-black text-white"
+                  : "text-gray-600 hover:bg-gray-100"
+              }`}
+              onClick={() => setThemesTab("skills")}
+            >
+              Thinking Skills
+            </button>
           </div>
         </div>
 
-        <div className="space-y-0 bg-white rounded-lg shadow-sm overflow-hidden">
-          {themes.map((theme, index) => (
-            <div
-              key={theme.id}
-              className={`${index !== 0 ? "border-t" : ""} border-gray-300`}
-            >
-              <div className="bg-stone-100 px-6 py-4">
-                <h3 className="font-medium text-gray-800 text-lg">
-                  {theme.title}
-                </h3>
-              </div>
-              <div className="p-6 flex">
-                <div className="mr-6 min-w-0 flex-shrink-0">
-                  <div className="text-center">
-                    <div className="font-bold text-lg">({theme.id})</div>
-                    <div className="text-sm text-gray-600 max-w-32">
-                      {theme.letter
-                        ? `'${theme.letter}' of SPICES`
-                        : "not in SPICES but is an AP theme"}
-                      {theme.id === "CDI" && <div>also (CUL)</div>}
+        {themesTab === "themes" ? (
+          <div className="space-y-0 bg-white rounded-lg shadow-sm overflow-hidden">
+            {themes.map((theme, index) => (
+              <div
+                key={theme.id}
+                className={`${index !== 0 ? "border-t" : ""} border-gray-300`}
+              >
+                <div className="bg-stone-100 px-6 py-4">
+                  <h3 className="font-medium text-gray-800 text-lg">
+                    {theme.title}
+                  </h3>
+                </div>
+                <div className="p-6 flex">
+                  <div className="mr-6 min-w-0 flex-shrink-0">
+                    <div className="text-center">
+                      <div className="font-bold text-lg">({theme.id})</div>
+                      <div className="text-sm text-gray-600 max-w-32">
+                        {theme.letter
+                          ? `'${theme.letter}' of SPICES`
+                          : "not in SPICES but is an AP theme"}
+                        {theme.id === "CDI" && <div>also (CUL)</div>}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-gray-700">
+                      {theme.description.split(" • ").map((item, index) => (
+                        <div key={index} className="mb-2">
+                          • {item}
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
-                <div className="flex-1">
-                  <div className="text-gray-700">
-                    {theme.description.split(" • ").map((item, index) => (
-                      <div key={index} className="mb-2">
-                        • {item}
-                      </div>
-                    ))}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="space-y-0 bg-white rounded-lg shadow-sm overflow-hidden">
+            {thinkingSkills.map((skill, index) => (
+              <div
+                key={skill.id}
+                className={`${index !== 0 ? "border-t" : ""} border-gray-300`}
+              >
+                <div className="bg-stone-100 px-6 py-4">
+                  <h3 className="font-medium text-gray-800 text-lg">
+                    {skill.title}
+                  </h3>
+                </div>
+                <div className="p-6 flex">
+                  <div className="mr-6 min-w-0 flex-shrink-0">
+                    <div className="text-center">
+                      <div className="font-bold text-lg">({skill.id})</div>
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-gray-700">{skill.description}</div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -803,9 +693,12 @@ const APWorldHistoryApp = () => {
       />
       <div className="min-h-screen bg-stone-200">
         <NavigationBar />
-        <MobileMenu />
+        <MobileMenu currentPage={currentPage} setCurrentPage={setCurrentPage} />
         <div className="flex">
-          <SideNavigation />
+          <SideNavigation
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
           {renderPage()}
         </div>
       </div>
