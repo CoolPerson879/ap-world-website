@@ -16,7 +16,7 @@ export default function LEQ3Page() {
           ← Back
         </Link>
         <span className="unit-title-playfair" style={{ display: 'block', textAlign: 'center', fontSize: 44, fontWeight: 700, letterSpacing: -1, marginBottom: 0, color: '#222' }}>
-          LEQ3
+          LEQ 3
         </span>
       </div>
       <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
@@ -39,20 +39,20 @@ export default function LEQ3Page() {
               transition: 'background 0.2s, color 0.2s',
               padding: '0 24px',
             }}
-            aria-label={`Prompt ${idx + 1}`}
-            title={`Prompt ${idx + 1}`}
+            aria-label={`Prompt ${idx + 2}`}
+            title={`Prompt ${idx + 2}`}
           >
-            {`LEQ3.${idx + 1}`}
+            {`${idx + 2}`}
           </button>
         ))}
       </div>
       {/* Prompts Container */}
       <div style={{ margin: '0 auto', maxWidth: 700, background: '#fff', borderRadius: 12, padding: 32, boxShadow: '0 2px 8px #eee', fontWeight: 400, marginBottom: 32 }}>
-        <h3 style={{ textAlign: 'center', fontSize: 22, marginBottom: 0, color: '#b45309', fontWeight: 700 }}>LEQ3 Prompts</h3>
-        <div style={{ marginTop: 12, textAlign: 'center', fontSize: 17, color: '#444' }}>Select a prompt below to practice your response.</div>
+        <h3 style={{ textAlign: 'center', fontSize: 22, marginBottom: 0, color: '#b45309', fontWeight: 700 }}>LEQ 3 Prompts</h3>
+        <div style={{ marginTop: 12, textAlign: 'center', fontSize: 17, color: '#444' }}>Answer Question 2 OR Question 3 OR Question 4</div>
       </div>
       <div style={{ margin: '0 auto', maxWidth: 700, background: '#fff', borderRadius: 12, padding: 32, boxShadow: '0 2px 8px #eee', fontWeight: 300 }}>
-        <h3 style={{ textAlign: 'center', fontSize: 20, marginBottom: 16 }}>{`Prompt ${selected + 1}`}</h3>
+        <h3 style={{ textAlign: 'center', fontSize: 20, marginBottom: 16 }}>{`Prompt ${selected + 2}`}</h3>
         <div style={{ marginBottom: 18, textAlign: 'left', fontSize: 16, color: '#444' }}>
           {subunit}
         </div>
