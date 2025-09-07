@@ -61,7 +61,16 @@ export default function Unit9() {
             event.subheading ? (
               <li key={i} style={{ fontWeight: 'bold', marginTop: 18, textAlign: 'center', fontSize: 18 }}>{event.subheading}</li>
             ) : (
-              <li key={i} style={{ marginLeft: 40 + (event.indent * 20), fontSize: 16, display: 'flex', alignItems: 'center', fontWeight: 300 }}>
+              <li
+                key={i}
+                style={{
+                  marginLeft: 40 + ((typeof event.indent === 'number' && !isNaN(event.indent) ? event.indent : 0) * 20),
+                  fontSize: 16,
+                  display: 'flex',
+                  alignItems: 'center',
+                  fontWeight: 300
+                }}
+              >
                 <span style={{ fontSize: 18, marginRight: 10, marginTop: 0, lineHeight: 1 }}>•</span>
                 <span dangerouslySetInnerHTML={{ __html: event.text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') }} />
               </li>
