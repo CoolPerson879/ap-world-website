@@ -1,8 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { units } from "./units";
-import { themes } from "./themes";
-import { thinkingSkills } from "./thinkingSkills";
+import { tableDataA, tableDataB } from "./themesdata";
 import {
   ChevronRight,
   Menu,
@@ -452,7 +451,7 @@ const APWorldHistoryApp = () => {
           className="text-3xl font-bold text-center mb-8"
           style={{ fontFamily: "Playfair Display, serif" }}
         >
-          {themesTab === "themes" ? "Themes" : "Thinking Skills"}
+          {themesTab === "themes" ? "Themes" : "Historical Thinking Skills"}
         </h1>
 
         <div className="flex justify-center mb-8">
@@ -475,41 +474,28 @@ const APWorldHistoryApp = () => {
               }`}
               onClick={() => setThemesTab("skills")}
             >
-              Thinking Skills
+              Historical Skills
             </button>
           </div>
         </div>
 
         {themesTab === "themes" ? (
           <div className="space-y-0 bg-white rounded-lg shadow-sm overflow-hidden">
-            {themes.map((theme, index) => (
+            {tableDataA.map((theme, index) => (
               <div
-                key={theme.id}
+                key={theme.title}
                 className={`${index !== 0 ? "border-t" : ""} border-gray-300`}
               >
-                <div className="bg-stone-100 px-6 py-4">
-                  <h3 className="font-medium text-gray-800 text-lg">
-                    {theme.title}
-                  </h3>
-                </div>
-                <div className="p-6 flex">
-                  <div className="mr-6 min-w-0 flex-shrink-0">
-                    <div className="text-center">
-                      <div className="font-bold text-lg">({theme.id})</div>
-                      <div className="text-sm text-gray-600 max-w-32">
-                        {theme.letter
-                          ? `'${theme.letter}' of SPICES`
-                          : "not in SPICES but is an AP theme"}
-                        {theme.id === "CDI" && <div>also (CUL)</div>}
-                      </div>
-                    </div>
+                <div className="bg-stone-100 px-6 py-4 flex items-center">
+                  <div className="mr-6 min-w-0 flex-shrink-0 text-center">
+                    <div className="font-bold text-lg">{theme.leftTop}</div>
+                    <div className="text-sm text-gray-600 max-w-32 whitespace-pre-line">{theme.leftBottom}</div>
                   </div>
                   <div className="flex-1">
+                    <h3 className="font-medium text-gray-800 text-lg mb-2">{theme.title}</h3>
                     <div className="text-gray-700">
-                      {theme.description.split(" • ").map((item, index) => (
-                        <div key={index} className="mb-2">
-                          • {item}
-                        </div>
+                      {theme.right.map((item, idx) => (
+                        <div key={idx} className="mb-2">{item}</div>
                       ))}
                     </div>
                   </div>
@@ -519,24 +505,25 @@ const APWorldHistoryApp = () => {
           </div>
         ) : (
           <div className="space-y-0 bg-white rounded-lg shadow-sm overflow-hidden">
-            {thinkingSkills.map((skill, index) => (
+            {tableDataB.map((skill, index) => (
               <div
-                key={skill.id}
+                key={skill.title}
                 className={`${index !== 0 ? "border-t" : ""} border-gray-300`}
               >
-                <div className="bg-stone-100 px-6 py-4">
-                  <h3 className="font-medium text-gray-800 text-lg">
-                    {skill.title}
-                  </h3>
-                </div>
-                <div className="p-6 flex">
-                  <div className="mr-6 min-w-0 flex-shrink-0">
-                    <div className="text-center">
-                      <div className="font-bold text-lg">({skill.id})</div>
-                    </div>
+                <div className="bg-stone-100 px-6 py-4 flex items-center">
+                  <div className="mr-6 min-w-0 flex-shrink-0 text-center">
+                    <div className="font-bold text-lg" style={{ color: skill.color }}>{skill.leftTop}</div>
                   </div>
                   <div className="flex-1">
-                    <div className="text-gray-700">{skill.description}</div>
+                    <h3 className="font-medium text-gray-800 text-lg mb-2">{skill.title}</h3>
+                    <div className="text-gray-700">
+                      {skill.right.map((item, idx) => (
+                        <div key={idx} className="mb-2 flex items-center">
+                          <span className="inline-block bg-gray-200 text-gray-700 rounded px-2 py-0.5 text-xs font-semibold mr-2" style={{ minWidth: 38, textAlign: 'center' }}>{item.badge}</span>
+                          <span>{item.text}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -656,18 +643,41 @@ const APWorldHistoryApp = () => {
 
   const WritingPage = () => (
     <div className="flex-1 bg-stone-200 min-h-screen">
-      <div className="max-w-4xl mx-auto p-6">
+      <div className="max-w-7xl mx-auto p-6">
         <h1
-          className="text-3xl font-bold text-center mb-6"
+          className="text-3xl font-bold text-center mb-8"
           style={{ fontFamily: "Playfair Display, serif" }}
         >
           Free Response Practice
         </h1>
-        <div className="bg-white rounded-lg shadow-sm p-8">
-          <p className="text-gray-600 text-lg text-center">
-            Practice DBQ and LEQ writing skills
-          </p>
-          <p className="text-gray-500 text-center mt-4">Coming soon...</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {[
+            { id: 'DBQ1', title: 'DBQ 1', desc: 'Practice Document-Based Question 1', href: '/units/DBQ1' },
+            { id: 'DBQ2', title: 'DBQ 2', desc: 'Practice Document-Based Question 2', href: '/units/DBQ2' },
+            { id: 'LEQ1', title: 'LEQ 1', desc: 'Practice Long Essay Question 1', href: '/units/LEQ1' },
+            { id: 'LEQ2', title: 'LEQ 2', desc: 'Practice Long Essay Question 2', href: '/units/LEQ2' },
+            { id: 'LEQ3', title: 'LEQ 3', desc: 'Practice Long Essay Question 3', href: '/units/LEQ3' },
+            { id: 'LEQ4', title: 'LEQ 4', desc: 'Practice Long Essay Question 4', href: '/units/LEQ4' },
+            { id: 'LEQ5', title: 'LEQ 5', desc: 'Practice Long Essay Question 5', href: '/units/LEQ5' },
+          ].map((item) => (
+            <div key={item.id} className="bg-white rounded-lg shadow-sm p-6 flex flex-col justify-between">
+              <div>
+                <h3 className="font-semibold text-gray-800 text-lg mb-2">{item.title}</h3>
+                <p className="text-gray-500 mb-4">{item.desc}</p>
+              </div>
+              <div className="flex justify-end">
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500 font-medium flex items-center hover:text-blue-700"
+                >
+                  Go to {item.title}
+                  <ChevronRight className="w-4 h-4 ml-1" />
+                </a>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
