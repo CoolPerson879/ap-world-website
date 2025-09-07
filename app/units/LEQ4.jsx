@@ -5,8 +5,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 
 export default function LEQ4Page() {
-  const unitData = LEQ4[0];
-  const prompts = Object.values(unitData);
+  const prompts = Object.values(LEQ4[0]);
   const [selected, setSelected] = useState(0);
   const subunit = prompts[selected];
 
@@ -21,14 +20,14 @@ export default function LEQ4Page() {
         </span>
       </div>
       <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
-        {unitData.map((s, idx) => (
+        {prompts.map((s, idx) => (
           <button
             key={idx}
             onClick={() => setSelected(idx)}
             style={{
               width: 120,
-              height: 36,
-              borderRadius: '50%',
+              height: 40,
+              borderRadius: 9999,
               background: selected === idx ? '#ffedd5' : '#fff',
               color: selected === idx ? '#b45309' : '#222',
               border: 'none',
@@ -38,9 +37,10 @@ export default function LEQ4Page() {
               cursor: 'pointer',
               boxShadow: selected === idx ? '0 0 0 2px #fbbf24' : 'none',
               transition: 'background 0.2s, color 0.2s',
+              padding: '0 24px',
             }}
-            aria-label={s.source}
-            title={s.source}
+            aria-label={`Prompt ${idx + 1}`}
+            title={`Prompt ${idx + 1}`}
           >
             {`LEQ4.${idx + 1}`}
           </button>
