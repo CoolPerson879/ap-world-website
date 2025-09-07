@@ -426,12 +426,17 @@ const APWorldHistoryApp = () => {
                   </p>
                 ))}
               </div>
-              <div className="flex justify-end">
-                <button className="text-blue-500 font-medium flex items-center hover:text-blue-700">
+                <div className="flex justify-end">
+                <a
+                  href={`/units/${unit.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500 font-medium flex items-center hover:text-blue-700"
+                >
                   Unit {unit.id} Content{" "}
                   <ChevronRight className="w-4 h-4 ml-1" />
-                </button>
-              </div>
+                </a>
+                </div>
             </div>
           ))}
         </div>
