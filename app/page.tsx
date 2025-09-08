@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { PracticeQuestions } from "./MCQuestionData";
 import { units } from "./units";
 import { tableDataA, tableDataB } from "./themesdata";
 import {
@@ -18,26 +19,33 @@ const APWorldHistoryApp = () => {
   const [currentPage, setCurrentPage] = useState("home");
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+  const [currentQuestionIdx, setCurrentQuestionIdx] = useState(() => Math.floor(Math.random() * PracticeQuestions.length));
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [shuffledOptions, setShuffledOptions] = useState<string[]>(() => {
+    const q = PracticeQuestions[Math.floor(Math.random() * PracticeQuestions.length)];
+    const arr = [q.answer, q.option2, q.option3, q.option4];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  });
 
   const NavigationBar = () => (
-    <div className="bg-white px-6 py-4 flex items-center justify-between border-b shadow-sm">
+    <div className="bg-white px-6 py-4 flex items-center justify-center border-b shadow-sm relative">
       {/* Menu button only on mobile */}
-      <div className="lg:hidden">
+      <div className="lg:hidden absolute left-4">
         <Menu
           className="w-6 h-6 cursor-pointer"
           onClick={() => setShowMobileMenu(true)}
         />
       </div>
       <h1
-        className="text-lg font-semibold mx-auto"
+        className="text-lg font-semibold text-center w-full"
         style={{ fontFamily: "Playfair Display, serif" }}
       >
         AP World History
       </h1>
-      <div className="flex items-center space-x-4">
-        <Share className="w-6 h-6 cursor-pointer" />
-        <HelpCircle className="w-6 h-6 cursor-pointer" />
-      </div>
     </div>
   );
 
@@ -108,15 +116,16 @@ const APWorldHistoryApp = () => {
             Free Response Practice
           </button>
           <button
-            onClick={() => setCurrentPage("content")}
+            onClick={() => setCurrentPage("exam")}
             className={`w-full text-left p-3 rounded-lg transition-colors ${
-              currentPage === "content"
+              currentPage === "exam"
                 ? "bg-orange-100 text-orange-700"
                 : "hover:bg-gray-100"
             }`}
           >
-            Content Review
+            Exam Information
           </button>
+          {/* Content Review tab removed */}
         </nav>
       </div>
     </div>
@@ -209,17 +218,18 @@ const APWorldHistoryApp = () => {
             </button>
             <button
               onClick={() => {
-                setCurrentPage("content");
+                setCurrentPage("exam");
                 setShowMobileMenu(false);
               }}
               className={`text-left p-3 rounded-lg transition-colors ${
-                currentPage === "content"
+                currentPage === "exam"
                   ? "bg-orange-100 text-orange-700"
                   : "hover:bg-gray-100"
               }`}
             >
-              Review
+              Exam Information
             </button>
+            {/* Content Review tab removed from mobile menu */}
           </nav>
         </div>
       </div>
@@ -311,18 +321,19 @@ const APWorldHistoryApp = () => {
               <ChevronRight className="w-6 h-6 text-gray-400" />
             </div>
 
+            {/* Content Review quick access removed from home */}
             <div
-              onClick={() => setCurrentPage("content")}
+              onClick={() => setCurrentPage("exam")}
               className="bg-white p-6 rounded-lg shadow-sm flex items-center justify-between cursor-pointer hover:shadow-md transition-shadow border-l-4 border-orange-500"
             >
               <div className="flex items-center">
                 <div className="bg-orange-100 p-3 rounded-lg mr-6">
-                  <Book className="w-8 h-8 text-orange-600" />
+                  <HelpCircle className="w-8 h-8 text-orange-600" />
                 </div>
                 <div>
-                  <h4 className="font-medium text-lg">Content Review</h4>
+                  <h4 className="font-medium text-lg">Exam Information</h4>
                   <p className="text-gray-500">
-                    Review key concepts and themes
+                    Learn about the AP exam format, scoring, and key dates
                   </p>
                 </div>
               </div>
@@ -371,18 +382,6 @@ const APWorldHistoryApp = () => {
           </div>
         </div>
 
-        {/* Exam Information */}
-        <div className="mb-8">
-          <div className="bg-orange-500 p-6 rounded-lg shadow-sm flex items-center text-white">
-            <HelpCircle className="w-8 h-8 mr-4" />
-            <div>
-              <h4 className="font-medium text-lg">Exam Information</h4>
-              <p className="opacity-90">
-                Learn about the AP exam format, scoring, and key dates
-              </p>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
@@ -534,112 +533,98 @@ const APWorldHistoryApp = () => {
     </div>
   );
 
-  const ContentReviewPage = () => (
-    <div className="flex-1 bg-stone-200 min-h-screen">
-      <div className="max-w-4xl mx-auto p-6">
-        <h1
-          className="text-3xl font-bold text-center mb-6"
-          style={{ fontFamily: "Playfair Display, serif" }}
-        >
-          Content Review
-        </h1>
+  // Removed duplicate Content Review section
 
-        <div className="text-center mb-8">
-          <p className="text-gray-600 text-lg">
-            Test your content recall with these non AP style questions!
-          </p>
-          <p className="text-gray-600 text-lg">
-            For AP Style Questions, go to Stimulus Based Practice
-          </p>
-        </div>
+  const PracticePage = () => {
+    const q = PracticeQuestions[currentQuestionIdx];
+    const options = shuffledOptions;
+    const correctIdx = options.indexOf(q.answer);
 
-        <div className="bg-white rounded-lg shadow-sm p-8">
-          <h2 className="text-xl font-medium text-center mb-8 leading-relaxed">
-            Which of the following best explains the growth of cities like
-            Timbuktu during the period 1200–1450?
-          </h2>
+    const handleSelect = (idx: number) => {
+      setSelectedAnswer(idx);
+      setShowFeedback(true);
+    };
 
-          <div className="space-y-4">
-            {[
-              "The establishment of European trading posts",
-              "The expansion of the Atlantic slave trade",
-              "Their role as centers of trade and Islamic scholarship",
-              "Military conquests by the Mongol Empire",
-            ].map((option, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedAnswer(index)}
-                className={`w-full p-4 text-left rounded-lg border-2 transition-colors text-lg ${
-                  selectedAnswer === index
-                    ? "border-blue-500 bg-blue-50"
-                    : "border-gray-200 bg-white hover:bg-gray-50"
-                }`}
-              >
-                {option}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+    const handleNext = () => {
+      let nextIdx;
+      do {
+        nextIdx = Math.floor(Math.random() * PracticeQuestions.length);
+      } while (nextIdx === currentQuestionIdx && PracticeQuestions.length > 1);
+      const nextQ = PracticeQuestions[nextIdx];
+      const arr = [nextQ.answer, nextQ.option2, nextQ.option3, nextQ.option4];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      setShuffledOptions(arr);
+      setCurrentQuestionIdx(nextIdx);
+      setSelectedAnswer(null);
+      setShowFeedback(false);
+    };
 
-  const PracticePage = () => (
-    <div className="flex-1 bg-stone-200 min-h-screen">
-      <div className="max-w-4xl mx-auto p-6">
-        <h1
-          className="text-3xl font-bold text-center mb-6"
-          style={{ fontFamily: "Playfair Display, serif" }}
-        >
-          Stimulus-Based Practice MCs
-        </h1>
-
-        <div className="text-center mb-8">
-          <p className="text-gray-600 text-lg">
-            Test your recall skills with these AP style questions!
-          </p>
-          <p className="text-gray-600 text-lg">
-            For more practice go to the Content Review page
-          </p>
-        </div>
-
-        <div className="bg-white rounded-lg shadow-sm p-8">
-          <div className="mb-8">
-            <p className="text-gray-700 mb-6 text-lg leading-relaxed">
-              The Ottoman government granted religious communities, such as
-              Christians and Jews, the right to govern themselves in matters of
-              personal law under the millet system.
+    return (
+      <div className="flex-1 bg-stone-200 min-h-screen">
+        <div className="max-w-4xl mx-auto p-6">
+          <h1
+            className="text-3xl font-bold text-center mb-6"
+            style={{ fontFamily: "Playfair Display, serif" }}
+          >
+            Content Review
+          </h1>
+          <div className="text-center mb-8">
+            <p className="text-gray-600 text-lg">
+              Test your recall skills with these multiple-choice questions
             </p>
-            <h2 className="text-xl font-medium">
-              What does this system illustrate about governance in the Ottoman
-              Empire?
-            </h2>
+            <p className="text-gray-600 text-lg">
+              AP-Style Stimulus-based Multiple Choice Questions coming soon!
+            </p>
           </div>
-
-          <div className="space-y-4">
-            {[
-              "The millet system caused religious conflict and civil war.",
-              "The empire sought to forcibly convert all subjects to Islam.",
-              "Religious minorities held equal political power in the empire.",
-              "The empire used religious tolerance to maintain control over diverse populations.",
-            ].map((option, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedAnswer(index)}
-                className={`w-full p-4 text-left rounded-lg border-2 transition-colors text-lg ${
-                  selectedAnswer === index
-                    ? "border-blue-500 bg-blue-50"
-                    : "border-gray-200 bg-white hover:bg-gray-50"
-                }`}
-              >
-                {option}
-              </button>
-            ))}
+          <div className="bg-white rounded-lg shadow-sm p-8">
+            <div className="mb-8">
+              <h2 className="text-xl font-medium mb-2">{q.question}</h2>
+            </div>
+            <div className="space-y-4">
+              {options.map((option, idx) => {
+                let btnClass = 'border-gray-200 bg-white hover:bg-gray-50';
+                if (showFeedback) {
+                  if (selectedAnswer === idx && idx === correctIdx) {
+                    btnClass = 'border-green-500 bg-green-50';
+                  } else if (selectedAnswer === idx && idx !== correctIdx) {
+                    btnClass = 'border-red-500 bg-red-50';
+                  } else if (selectedAnswer !== correctIdx && idx === correctIdx) {
+                    // If answered incorrectly, highlight correct answer
+                    btnClass = 'border-green-500 bg-green-50';
+                  } else {
+                    btnClass = 'border-gray-200 bg-white';
+                  }
+                }
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => !showFeedback && handleSelect(idx)}
+                    className={`w-full p-4 text-left rounded-lg border-2 transition-colors text-lg ${btnClass}`}
+                    disabled={showFeedback}
+                  >
+                    {option}
+                  </button>
+                );
+              })}
+            </div>
+            {showFeedback && (
+              <div className="mt-6 flex justify-center">
+                <button
+                  onClick={handleNext}
+                  className="px-6 py-3 bg-orange-500 text-white rounded-lg font-semibold text-lg shadow hover:bg-orange-600 transition-colors"
+                >
+                  Next Question
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const WritingPage = () => (
     <div className="flex-1 bg-stone-200 min-h-screen">
@@ -682,22 +667,59 @@ const APWorldHistoryApp = () => {
       </div>
     </div>
   );
-
+const ExamInfoPage = () => (
+  <div className="flex-1 bg-stone-200 min-h-screen">
+    <div className="max-w-4xl mx-auto p-6">
+      <h1 className="text-3xl font-bold text-center mb-6" style={{ fontFamily: "Playfair Display, serif" }}>
+        AP World History Exam Information
+      </h1>
+      <div className="bg-white rounded-lg shadow-sm p-8">
+        <h2 className="text-xl font-semibold mb-4">Exam Format</h2>
+        <ul className="list-disc pl-6 mb-6 text-gray-700">
+          <li>Section I: Multiple Choice (55 questions, 55 minutes, 40% of score)</li>
+          <li>Section I: Short Answer (3 questions of 4, (1,2 required) 40 minutes, 20% of score)</li>
+          <li>Section II: Document-Based Question (DBQ, 1 question, 60 minutes, 25% of score)</li>
+          <li>Section II: Long Essay Question (LEQ, 1 of 3 prompts, 40 minutes, 15% of score)</li>
+        </ul>
+        <h2 className="text-xl font-semibold mb-4">Scoring</h2>
+        <ul className="list-disc pl-6 mb-6 text-gray-700">
+          <li>Multiple Choice: 1 point per correct answer, no penalty for guessing</li>
+          <li>Free Response: Rubrics for DBQ and LEQ available on College Board</li>
+          <li>Final score is a weighted combination of all sections</li>
+          <li>Scores reported on a scale of 1-5</li>
+          <li>Score of 3 or higher typically considered passing</li>
+        </ul>
+        <h2 className="text-xl font-semibold mb-4">Key Dates</h2>
+        <ul className="list-disc pl-6 mb-6 text-gray-700">
+          <li>2026 AP World History Exam Date: May 7, 2026 (check College Board for updates)</li>
+          <li>Scores typically released in early July</li>
+        </ul>
+        <h2 className="text-xl font-semibold mb-4">Resources</h2>
+        <ul className="list-disc pl-6 text-gray-700">
+          <li><a href="https://apstudents.collegeboard.org/courses/ap-world-history-modern" className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">AP World History: Modern – College Board</a></li>
+          <li><a href="https://apcentral.collegeboard.org/courses/ap-world-history/exam" className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">AP World History Exam Details</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+);
   const renderPage = () => {
     switch (currentPage) {
       case "units":
         return <UnitsPage />;
       case "themes":
         return <ThemesPage />;
-      case "content":
-        return <ContentReviewPage />;
       case "practice":
         return <PracticePage />;
       case "writing":
         return <WritingPage />;
+      case "exam":
+        return <ExamInfoPage />;
       default:
         return <HomePage />;
     }
+// ExamInfoPage must be declared before renderPage
+
   };
 
   return (
