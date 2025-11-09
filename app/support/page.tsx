@@ -7,9 +7,13 @@ export default function SupportPage() {
       <p>
         If you need help, please contact us at
         {" "}
-        <a href="mailto:support@yourdomain.com">support@yourdomain.com</a>.
+        <a href="mailto:support@rajscape.com">support@rajscape.com</a>.
       </p>
-      <p>We aim to reply within 48 hours.</p>
+      <p>
+        Visit the privacy policy 
+        
+        <a href="https://apworld.rajscape.com/privacy-policy.html">here</a>.
+      </p>
     </main>
   );
 }
